@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>PM Flashcards — 300 Ultra-Deep Cards (Holographic Theme)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            // New Holographic / Neo-Brutalism Palette
+            'bg-main': '#0c0f1e',        // Deep Space Blue/Black
+            'card-base': '#1f2937',      // Dark Slate/Gray
+            'white-text': '#f9fafb',     // Pure White for main text
+            'muted-text': '#9ca3af',     // Gray for secondary text
+            'accent-focus': '#10b981',   // Emerald Green (Primary Focus)
+            'accent-mastered': '#f59e0b',// Amber/Gold (Mastered)
+            
+            // Category Tag Colors (Sharp, Saturated)
+            'tag-consumer': '#ef4444',
+            'tag-saas': '#3b82f6',    
+            'tag-cloud': '#10b981',   
+            'tag-ai': '#a855f7',      
+            'tag-marketplace': '#f97316', 
+            'tag-fintech': '#0d9488', 
+            'tag-specialist': '#64748b', 
+            'tag-ecommerce': '#fde047', 
+            'tag-growth': '#ec4899', 
+            'tag-devops': '#8b5cf6', 
+          },
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
+          }
+        },
+      }
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    body {
+      background: #0c0f1e; 
+      color: #f9fafb; 
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Holographic Textured Background for a unique look */
+    .bg-holographic {
+        background-color: #0c0f1e;
+        background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+        background-size: 15px 15px;
+    }
+
+    /* Neo-Brutalism Header */
+    .header-sticky {
+      position: sticky;
+      top: 0;
+      background: #0c0f1e; 
+      backdrop-filter: blur(8px);
+      z-index: 10;
+      border-bottom: 3px solid #10b981; /* Strong accent line */
+    }
+
+    /* Card specific styles for flip effect */
+    .card {
+      transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; 
+      perspective: 1200px; 
+      height: 100%; 
+      position: relative;
+    }
+    .card:hover {
+      transform: translateY(-4px); 
+      box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3); 
+    }
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s; 
+      transform-style: preserve-3d;
+      min-height: 200px; /* Reduced slightly for density */
+    }
+    .card-inner.is-flipped { 
+      transform: rotateY(180deg);
+    }
+
+    /* Front and Back faces - Sharp Borders */
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden; 
+      display: flex; 
+      flex-direction: column;
+      justify-content: space-between; 
+      border-radius: 0.5rem; /* Sharper corners */
+      padding: 1.5rem; 
+      border: 1px solid #374151;
+      background-color: #1f2937;
+    }
+    
+    .card-back {
+        background-color: #273444; /* Slightly different shade for contrast */
+        transform: rotateY(180deg);
+        border: 1px solid #10b981;
+    }
+    
+    /* Mastered Card Styling */
+    .card.mastered .card-front,
+    .card.mastered .card-back {
+        border: 2px solid #f59e0b; /* Amber/Gold border */
+        box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+    }
+
+    /* Content Typography & Alignment */
+    .text-q {
+      font-weight: 700;
+      font-size: 1.35rem; /* Reduced for density */
+      line-height: 1.3;
+      color: #ffffff;
+    }
+    .text-a {
+      font-size: 0.95rem; /* Reduced for density */
+      line-height: 1.6;
+      color: #f3f4f6; 
+      flex-grow: 1; 
+      padding-bottom: 1rem; 
+    }
+
+    /* --- New Feature: Quick Answer Hover Hint (Desktop Only) --- */
+    .card-hover-hint {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 10px; /* Thin stripe */
+        background-color: #f59e0b;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+        border-radius: 0 0.5rem 0.5rem 0;
+        overflow: hidden;
+        z-index: 5; /* Below the inner card content */
+    }
+    .card:hover .card-front .card-hover-hint {
+        opacity: 0.5;
+    }
+    .card-hover-hint-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+        white-space: nowrap;
+        font-size: 10px;
+        color: #1f2937;
+        font-weight: 700;
+        overflow: hidden;
+    }
+    @media (max-width: 768px) {
+        .card-hover-hint { display: none; } /* Disable on small screens/touch devices */
+    }
+  </style>
+</head>
+<body class="font-sans bg-holographic">
+
+<div class="app max-w-7xl mx-auto p-4 md:p-6 min-h-screen flex flex-col gap-6">
+
+  <div class="header-sticky rounded-lg p-4 flex flex-col gap-4 items-start">
+    
+    <div class="flex flex-col md:flex-row gap-6 items-start md:items-center w-full">
+      <div class="brand flex flex-col min-w-48">
+        <div class="text-3xl font-extrabold tracking-wider text-accent-focus">PM Metrics: 300 Cards</div>
+        <div class="text-sm mt-1 text-muted-text">Focused Study Tool | Holographic Edition</div>
+      </div>
+      
+      <input id="search" class="
+        search w-full md:max-w-lg bg-card-base border border-accent-focus/50 text-white-text rounded-md p-3 text-base
+        placeholder-muted-text focus:ring-accent-focus focus:border-accent-focus
+      " placeholder="Search metric, formula, or category..." />
+    </div>
+
+    <div id="category-tags" class="flex flex-wrap gap-2 w-full border-t border-card-base pt-3 mt-2">
+      <div id="tag-all" class="tag-pill text-xs py-1 px-3 rounded-full" data-filter-value="all">ALL CATEGORIES</div>
+    </div>
+  </div>
+
+  <div class="topbar flex justify-between items-end flex-wrap gap-4 mt-2 px-1">
+    
+    <div class="flex flex-col gap-2 w-full md:w-auto">
+        <div class="w-full h-2 bg-card-base rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-accent-mastered transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between items-center text-sm">
+             <div class="count text-base text-accent-focus font-bold" id="count"></div>
+             <div id="mastery-status" class="text-xs text-muted-text">0 / 300 Mastered</div>
+        </div>
+        
+        <div class="flex gap-3 items-center flex-wrap pt-2">
+            <button class="pill bg-card-base hover:bg-accent-focus/20 transition-colors cursor-pointer text-sm py-1.5 px-4 rounded-full border border-accent-focus/50 text-accent-focus flex items-center gap-1 font-semibold" onclick="shuffle()">
+              Shuffle
+            </button>
+            <button class="pill bg-card-base hover:bg-accent-mastered/20 transition-colors cursor-pointer text-sm py-1.5 px-4 rounded-full border border-accent-mastered/50 text-accent-mastered flex items-center gap-1 font-semibold" onclick="flipAll()">
+              Flip All
+            </button>
+            <button class="pill bg-card-base hover:bg-red-800/40 transition-colors cursor-pointer text-sm py-1.5 px-4 rounded-full border border-red-500/50 text-red-400" onclick="reset()">
+              Reset All
+            </button>
+        </div>
+    </div>
+    
+    <div class="flex gap-4 items-center">
+      <select id="sort-filter" class="
+        select bg-card-base border border-muted-text/50 text-white-text rounded-md p-2 focus:ring-accent-focus focus:border-accent-focus text-sm
+      ">
+        <option value="index">Sort: Default Order</option>
+        <option value="category">Sort: By Category</option>
+      </select>
+      <select id="mastery-filter" class="
+        select bg-card-base border border-accent-mastered/50 text-white-text rounded-md p-2 
+        focus:ring-accent-mastered focus:border-accent-mastered text-sm
+      ">
+        <option value="all">Filter: All Cards</option>
+        <option value="unmastered">Filter: Unmastered</option>
+        <option value="mastered">Filter: Mastered</option>
+      </select>
+    </div>
+  </div>
+  
+  <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 mt-4"></div>
+  
+  <div class="footer flex items-center justify-center p-6 border-t border-card-base mt-8">
+    <div class="text-sm text-muted-text text-center">
+      Tap card to flip • Hover over the card edge for a quick hint • Use filters to build custom study lists.
+    </div>
+  </div>
+</div>
+
+<script>
+// --- Card Data ---
+
+// NOTE: Added a unique ID (idx) to each card object to track state in local storage
+const cards = [{"idx": 1, "q": "CAC", "a": "Cost to acquire one customer. Formula: Total Marketing & Sales Spend ÷ New Customers.", "cat": "Consumer"}, {"idx": 2, "q": "CAC Payback", "a": "Months to recover CAC via contribution margin. Formula: CAC ÷ Avg gross profit per month.", "cat": "Consumer"}, {"idx": 3, "q": "LTV", "a": "Expected gross profit from customer lifetime. Simplified: (ARPU × Gross Margin%) ÷ Monthly Churn%.", "cat": "Consumer"}, {"idx": 4, "q": "LTV:CAC", "a": "Ratio of lifetime value to acquisition cost. LTV ÷ CAC.", "cat": "Consumer"}, {"idx": 5, "q": "DAU", "a": "Daily Active Users — unique users per day.", "cat": "Consumer"}, {"idx": 6, "q": "MAU", "a": "Monthly Active Users — unique users per month.", "cat": "Consumer"}, {"idx": 7, "q": "Stickiness (DAU/MAU)", "a": "Percent of monthly users active daily. DAU ÷ MAU.", "cat": "Consumer"}, {"idx": 8, "q": "D1 Retention", "a": "% of users active on day 1 after signup.", "cat": "Consumer"}, {"idx": 9, "q": "D7 Retention", "a": "% of users active on day 7 after signup.", "cat": "Consumer"}, {"idx": 10, "q": "D30 Retention", "a": "% of users active on day 30 after signup.", "cat": "Consumer"}, {"idx": 11, "q": "WEU (Weekly Engaged Users)", "a": "Unique users active in a 7-day window.", "cat": "Consumer"}, {"idx": 12, "q": "TTFO (Time to First Order)", "a": "Median days between signup and first order.", "cat": "Consumer"}, {"idx": 13, "q": "TTFV (Time to First Value)", "a": "Median time until user experiences core value.", "cat": "Consumer"}, {"idx": 14, "q": "Activation Rate", "a": "% of signups who complete core onboarding steps.", "cat": "Consumer"}, {"idx": 15, "q": "Onboarding Completion Rate", "a": "% of new users completing onboarding flow.", "cat": "Consumer"}, {"idx": 16, "q": "First-Order Conversion", "a": "% signups who place first order.", "cat": "Consumer"}, {"idx": 17, "q": "AOV", "a": "Average Order Value. GMV ÷ Orders.", "cat": "Consumer"}, {"idx": 18, "q": "ARPU", "a": "Average Revenue Per User. Total revenue ÷ active users.", "cat": "Consumer"}, {"idx": 19, "q": "ARPPU", "a": "Average Revenue Per Paying User. Revenue ÷ paying users.", "cat": "Consumer"}, {"idx": 20, "q": "GMV", "a": "Gross Merchandise Value — total transaction value across platform.", "cat": "Consumer"}, {"idx": 21, "q": "Take Rate", "a": "Platform revenue ÷ GMV.", "cat": "Consumer"}, {"idx": 22, "q": "Repeat Purchase Rate", "a": "% users placing 2+ orders in period.", "cat": "Consumer"}, {"idx": 23, "q": "Order Frequency", "a": "Average orders per active user per month.", "cat": "Consumer"}, {"idx": 24, "q": "Churn Rate (User)", "a": "Percent of users lost in period. Churned ÷ starting users.", "cat": "Consumer"}, {"idx": 25, "q": "Cohort Retention Curve", "a": "Retention by cohort over time; shows retention decay.", "cat": "Consumer"}, {"idx": 26, "q": "NPS", "a": "Net Promoter Score = %Promoters − %Detractors.", "cat": "Consumer"}, {"idx": 27, "q": "CSAT", "a": "Customer satisfaction score from surveys, 1–5.", "cat": "Consumer"}, {"idx": 28, "q": "CTR", "a": "Click-through rate: clicks ÷ impressions.", "cat": "Consumer"}, {"idx": 29, "q": "Conversion Rate (overall)", "a": "Orders ÷ visits or sessions.", "cat": "Consumer"}, {"idx": 30, "q": "Install → Signup Conversion", "a": "Signups ÷ Installs.", "cat": "Consumer"}, {"idx": 31, "q": "Signup → First Order Conversion", "a": "First orders ÷ signups.", "cat": "Consumer"}, {"idx": 32, "q": "Cart → Checkout Conversion", "a": "Checkouts ÷ carts.", "cat": "Consumer"}, {"idx": 33, "q": "Checkout → Payment Conversion", "a": "Payments ÷ checkouts.", "cat": "Consumer"}, {"idx": 34, "q": "Bounce Rate", "a": "% sessions with no interaction.", "cat": "Consumer"}, {"idx": 35, "q": "Session Frequency", "a": "Avg sessions per user over period.", "cat": "Consumer"}, {"idx": 36, "q": "Session Duration", "a": "Avg time per session.", "cat": "Consumer"}, {"idx": 37, "q": "Search Conversion", "a": "Orders from search results ÷ search sessions.", "cat": "Consumer"}, {"idx": 38, "q": "Recommendation Precision", "a": "Relevant recommendations ÷ shown recommendations.", "cat": "Consumer"}, {"idx": 39, "q": "Search Latency", "a": "Time to return search results.", "cat": "Consumer"}, {"idx": 40, "q": "Refund Rate", "a": "Refunded orders ÷ total orders.", "cat": "Consumer"}, {"idx": 41, "q": "Cancellation Rate (customer)", "a": "Customer cancellations ÷ confirmed orders.", "cat": "Consumer"}, {"idx": 42, "q": "Cancellation Rate (partner)", "a": "Partner-initiated cancellations ÷ confirmed orders.", "cat": "Consumer"}, {"idx": 43, "q": "Support Tickets / Order", "a": "Support tickets ÷ orders.", "cat": "Consumer"}, {"idx": 44, "q": "FCR (First Contact Resolution)", "a": "% tickets resolved on first contact.", "cat": "Consumer"}, {"idx": 45, "q": "App Crash Rate", "a": "Sessions with crash ÷ total sessions.", "cat": "Consumer"}, {"idx": 46, "q": "Page Load Time", "a": "Median page or screen load time.", "cat": "Consumer"}, {"idx": 47, "q": "Net Revenue (per order)", "a": "Revenue after discounts ÷ orders.", "cat": "Consumer"}, {"idx": 48, "q": "Contribution Margin per Order", "a": "Revenue − variable fulfillment costs per order.", "cat": "Consumer"}, {"idx": 49, "q": "MRR", "a": "Monthly Recurring Revenue — sum of recurring revenue per month.", "cat": "SaaS"}, {"idx": 50, "q": "ARR", "a": "Annual Recurring Revenue = MRR × 12.", "cat": "SaaS"}, {"idx": 51, "q": "NRR", "a": "Net Revenue Retention = (Start MRR − Churn + Expansion) ÷ Start MRR ×100.", "cat": "SaaS"}, {"idx": 52, "q": "GRR", "a": "Gross Revenue Retention = (Start MRR − Churn) ÷ Start MRR ×100.", "cat": "SaaS"}, {"idx": 53, "q": "Logo Churn", "a": "% of customer accounts lost in period.", "cat": "SaaS"}, {"idx": 54, "q": "MRR Growth Rate", "a": "(MRR_current − MRR_prev) ÷ MRR_prev.", "cat": "SaaS"}, {"idx": 55, "q": "MRR Expansion", "a": "Additional MRR from existing customers (upsell/cross-sell).", "cat": "SaaS"}, {"idx": 56, "q": "MRR Contraction", "a": "MRR lost from downgrades/downsells.", "cat": "SaaS"}, {"idx": 57, "q": "Customer Acquisition Cost (SaaS)", "a": "Fully loaded CAC including S&M and onboarding allocations.", "cat": "SaaS"}, {"idx": 58, "q": "Payback Period (SaaS)", "a": "Months to recover CAC from gross margin.", "cat": "SaaS"}, {"idx": 59, "q": "Magic Number", "a": "(ARR_current − ARR_prev)×4 ÷ Sales & Marketing spend.", "cat": "SaaS"}, {"idx": 60, "q": "LTV (SaaS)", "a": "(ARPU × Gross Margin%) ÷ Monthly Churn%.", "cat": "SaaS"}, {"idx": 61, "q": "LTV:CAC (SaaS)", "a": "LTV divided by CAC.", "cat": "SaaS"}, {"idx": 62, "q": "NRR > 100%", "a": "Indicates expansion offsets churn; >120% best-in-class.", "cat": "SaaS"}, {"idx": 63, "q": "PQL Rate", "a": "Product Qualified Leads ÷ free trial users or signups.", "cat": "SaaS"}, {"idx": 64, "q": "Sales Cycle Length", "a": "Median days from SQL to Closed-Won.", "cat": "SaaS"}, {"idx": 65, "q": "Win Rate", "a": "Closed-Won ÷ Opportunities.", "cat": "SaaS"}, {"idx": 66, "q": "Churn Cohort Analysis", "a": "Cohort-level churn to find patterns.", "cat": "SaaS"}, {"idx": 67, "q": "Time to Value (TTV)", "a": "Median time until customer perceives value.", "cat": "SaaS"}, {"idx": 68, "q": "Activation (SaaS)", "a": "% of new seats/accounts reaching initial milestone.", "cat": "SaaS"}, {"idx": 69, "q": "Seat Utilization", "a": "Active seats ÷ purchased seats.", "cat": "SaaS"}, {"idx": 70, "q": "Average Contract Value (ACV)", "a": "Average annual contract value per customer.", "cat": "SaaS"}, {"idx": 71, "q": "Deal Size Distribution", "a": "Percent of deals by size buckets.", "cat": "SaaS"}, {"idx": 72, "q": "Net New ARR", "a": "ARR added from new customers in period.", "cat": "SaaS"}, {"idx": 73, "q": "Expansion ARR", "a": "ARR added from existing customers.", "cat": "SaaS"}, {"idx": 74, "q": "Contraction ARR", "a": "ARR lost to downgrades.", "cat": "SaaS"}, {"idx": 75, "q": "Customer Health Score", "a": "Composite score of usage, support, NPS.", "cat": "SaaS"}, {"idx": 76, "q": "Product Qualified Revenue", "a": "Revenue from PQL-identified customers.", "cat": "SaaS"}, {"idx": 77, "q": "NRR by Cohort", "a": "NRR segmented by cohort start month.", "cat": "SaaS"}, {"idx": 78, "q": "Free-to-Paid Conversion Rate", "a": "% trial users converting to paid.", "cat": "SaaS"}, {"idx": 79, "q": "Trial-to-PQL Conversion", "a": "% trial users meeting PQL criteria.", "cat": "SaaS"}, {"idx": 80, "q": "DNU (Daily New Users) for SaaS", "a": "Useful for freemium models.", "cat": "SaaS"}, {"idx": 81, "q": "Monthly Active Accounts (MAA)", "a": "Active paying accounts in month.", "cat": "SaaS"}, {"idx": 82, "q": "Booking vs Revenue Recognition Gap", "a": "Timing differences in bookings and GAAP revenue.", "cat": "SaaS"}, {"idx": 83, "q": "Churn by ARR Bucket", "a": "Churn segmented by customer tier.", "cat": "SaaS"}, {"idx": 84, "q": "Onboarding Task Completion Rate", "a": "% customers completing onboarding checklist.", "cat": "SaaS"}, {"idx": 85, "q": "Support Response Time (SaaS)", "a": "Median time to first response for support tickets.", "cat": "SaaS"}, {"idx": 86, "q": "PS Attach Rate", "a": "Professional services attached to deals ÷ deals.", "cat": "SaaS"}, {"idx": 87, "q": "Customer Success Touchpoints", "a": "Avg successful CS actions per high-risk account.", "cat": "SaaS"}, {"idx": 88, "q": "Renewal Rate", "a": "Signed renewals ÷ renewal opportunities.", "cat": "SaaS"}, {"idx": 89, "q": "Upsell Rate", "a": "% customers with upsell booked in period.", "cat": "SaaS"}, {"idx": 90, "q": "Deal Velocity", "a": "Average time from lead → closed.", "cat": "SaaS"}, {"idx": 91, "q": "Contract Expansion Velocity", "a": "Time from first contract → expansion contract.", "cat": "SaaS"}, {"idx": 92, "q": "Revenue Concentration (top N customers)", "a": "% of ARR from top customers.", "cat": "SaaS"}, {"idx": 93, "q": "Churn Prediction Accuracy", "a": "Precision/recall of churn model.", "cat": "SaaS"}, {"idx": 94, "q": "Trial Engagement Score", "a": "Composite activity metric during trial.", "cat": "SaaS"}, {"idx": 95, "q": "SLA Availability", "a": "(Total Time − Downtime) ÷ Total Time.", "cat": "Cloud"}, {"idx": 96, "q": "SLO", "a": "Service Level Objective — target like p99 latency < X.", "cat": "Cloud"}, {"idx": 97, "q": "SLI", "a": "Service Level Indicator — measured metric e.g., success rate.", "cat": "Cloud"}, {"idx": 98, "q": "MTTR", "a": "Mean Time To Recovery = Total downtime ÷ incidents.", "cat": "Cloud"}, {"idx": 99, "q": "MTBF", "a": "Mean Time Between Failures = Total uptime ÷ failures.", "cat": "Cloud"}, {"idx": 100, "q": "Error Rate", "a": "Failed requests ÷ total requests.", "cat": "Cloud"}, {"idx": 101, "q": "P50/P90/P99 Latency", "a": "Percentile response time metrics.", "cat": "Cloud"}, {"idx": 102, "q": "Throughput (RPS)", "a": "Requests per second.", "cat": "Cloud"}, {"idx": 103, "q": "CPU Utilization", "a": "% CPU used on average.", "cat": "Cloud"}, {"idx": 104, "q": "Memory Utilization", "a": "% memory used.", "cat": "Cloud"}, {"idx": 105, "q": "Disk IOPS", "a": "Input/output operations per second.", "cat": "Cloud"}, {"idx": 106, "q": "Network Bandwidth Utilization", "a": "% of network capacity used.", "cat": "Cloud"}, {"idx": 107, "q": "Cache Hit Ratio", "a": "Cache hits ÷ cache accesses.", "cat": "Cloud"}, {"idx": 108, "q": "Cold Start Time (serverless)", "a": "Time for function/container cold start.", "cat": "Cloud"}, {"idx": 109, "q": "Provisioning Time (VM)", "a": "Time to provision new VM instance.", "cat": "Cloud"}, {"idx": 110, "q": "Autoscale Success Rate", "a": "Successful scaling events ÷ total scaling events.", "cat": "Cloud"}, {"idx": 111, "q": "Scheduler Latency", "a": "Time for job scheduler to allocate resources.", "cat": "Cloud"}, {"idx": 112, "q": "Pod Eviction Rate (k8s)", "a": "Evictions ÷ pods over time.", "cat": "Cloud"}, {"idx": 113, "q": "Cluster Saturation", "a": "% of cluster capacity used.", "cat": "Cloud"}, {"idx": 114, "q": "Resource Fragmentation", "a": "Wasted capacity due to small allocations.", "cat": "Cloud"}, {"idx": 115, "q": "Reserved Instance Utilization", "a": "% of RIs consumed.", "cat": "Cloud"}, {"idx": 116, "q": "Spot Interruption Rate", "a": "% spot instances interrupted by provider.", "cat": "Cloud"}, {"idx": 117, "q": "Cost per vCPU-hour", "a": "Infra cost normalized per compute unit.", "cat": "Cloud"}, {"idx": 118, "q": "Cost per GPU-hour", "a": "GPU infra cost per hour.", "cat": "Cloud"}, {"idx": 119, "q": "Idle Resource %", "a": "Idle spend ÷ total spend.", "cat": "Cloud"}, {"idx": 120, "q": "Hot Path Latency", "a": "Latency on critical request path.", "cat": "Cloud"}, {"idx": 121, "q": "Cold Path Latency", "a": "Latency on background processing path.", "cat": "Cloud"}, {"idx": 122, "q": "Autoscaling Lag", "a": "Time between threshold breach → scaled resource available.", "cat": "Cloud"}, {"idx": 123, "q": "Throttling Events", "a": "Count of throttled requests.", "cat": "Cloud"}, {"idx": 124, "q": "Retry Rate", "a": "Percent of retried requests.", "cat": "Cloud"}, {"idx": 125, "q": "Deployment Frequency", "a": "Releases per day or week.", "cat": "Cloud"}, {"idx": 126, "q": "Change Failure Rate", "a": "Failed deployments ÷ total deployments.", "cat": "Cloud"}, {"idx": 127, "q": "Lead Time for Changes", "a": "Commit → production time.", "cat": "Cloud"}, {"idx": 128, "q": "Rollback Rate", "a": "Deployments that were rolled back.", "cat": "Cloud"}, {"idx": 129, "q": "CI/CD Success Rate", "a": "Passing pipelines ÷ total pipelines.", "cat": "Cloud"}, {"idx": 130, "q": "Incident Count", "a": "Number of incidents in period.", "cat": "Cloud"}, {"idx": 131, "q": "Mean Time To Detect (MTTD)", "a": "Time to detect incidents.", "cat": "Cloud"}, {"idx": 132, "q": "Alert Fatigue Index", "a": "False-positive alerts ÷ total alerts.", "cat": "Cloud"}, {"idx": 133, "q": "Capacity Forecast Accuracy", "a": "Forecasted vs actual capacity usage.", "cat": "Cloud"}, {"idx": 134, "q": "Sustained Load Duration", "a": "Time system sustains high load.", "cat": "Cloud"}, {"idx": 135, "q": "Network P95 Latency", "a": "95th percentile network latency.", "cat": "Cloud"}, {"idx": 136, "q": "DNS Resolution Time", "a": "Time to resolve DNS queries.", "cat": "Cloud"}, {"idx": 137, "q": "E2E (End-to-end) Latency", "a": "Client request → response time.", "cat": "Cloud"}, {"idx": 138, "q": "Service Dependency Failure Impact", "a": "Downstream impact score.", "cat": "Cloud"}, {"idx": 139, "q": "Database Connection Pool Exhaustion Events", "a": "Count of exhaustion incidents.", "cat": "Cloud"}, {"idx": 140, "q": "Circuit Breaker Trips", "a": "Fault tolerance activations.", "cat": "Cloud"}, {"idx": 141, "q": "Backup Success Rate", "a": "Successful backups ÷ attempts.", "cat": "Cloud"}, {"idx": 142, "q": "Hallucination Rate", "a": "% of outputs containing fabricated facts.", "cat": "AI"}, {"idx": 143, "q": "Inference Latency", "a": "Time to produce model output.", "cat": "AI"}, {"idx": 144, "q": "Token Throughput", "a": "Tokens generated per second.", "cat": "AI"}, {"idx": 145, "q": "Cost per 1k Tokens", "a": "Cloud cost to generate 1,000 tokens.", "cat": "AI"}, {"idx": 146, "q": "Precision@k (retrieval)", "a": "Relevant docs in top-k ÷ k.", "cat": "AI"}, {"idx": 147, "q": "Recall@k", "a": "Relevant docs retrieved ÷ total relevant docs.", "cat": "AI"}, {"idx": 148, "q": "F1 Score", "a": "Harmonic mean of precision and recall for classification tasks.", "cat": "AI"}, {"idx": 149, "q": "BLEU / ROUGE (NLP)", "a": "Text similarity metrics for generation quality.", "cat": "AI"}, {"idx": 150, "q": "Human Eval Score", "a": "Human-rated quality of outputs.", "cat": "AI"}, {"idx": 151, "q": "Model Steerability", "a": "Ability to follow instructions reliably.", "cat": "AI"}, {"idx": 152, "q": "Safety Violation Rate", "a": "% outputs violating safety policies.", "cat": "AI"}, {"idx": 153, "q": "Toxicity Rate", "a": "% outputs flagged toxic.", "cat": "AI"}, {"idx": 154, "q": "PII Leakage Rate", "a": "% outputs containing personal data.", "cat": "AI"}, {"idx": 155, "q": "Guardrail Trigger Rate", "a": "Frequency of safety guardrail activations.", "cat": "AI"}, {"idx": 156, "q": "Red-Team Failure Rate", "a": "% red-team prompts that bypass safeguards.", "cat": "AI"}, {"idx": 157, "q": "Ground-Truth Agreement Rate", "a": "% answers matching canonical ground truth.", "cat": "AI"}, {"idx": 158, "q": "Context Relevance Score", "a": "How relevant retrieved context is to query.", "cat": "AI"}, {"idx": 159, "q": "Retrieval Precision", "a": "Precision of retrieval component.", "cat": "AI"}, {"idx": 160, "q": "Retrieval Recall", "a": "Recall of retrieval component.", "cat": "AI"}, {"idx": 161, "q": "Context Utilization Ratio", "a": "% retrieved context used in final output.", "cat": "AI"}, {"idx": 162, "q": "RAG Hallucination Reduction", "a": "Percent drop in hallucination after RAG.", "cat": "AI"}, {"idx": 163, "q": "Prompt Success Rate", "a": "% prompts producing acceptable answer.", "cat": "AI"}, {"idx": 164, "q": "Session Success Rate (agents)", "a": "% sessions where user achieves intended goal.", "cat": "AI"}, {"idx": 165, "q": "Multi-step Task Completion Rate", "a": "% multi-step tasks finished autonomously.", "cat": "AI"}, {"idx": 166, "q": "Human Override Rate", "a": "% of AI actions corrected by humans.", "cat": "AI"}, {"idx": 167, "q": "Assisted Actions Accepted", "a": "AI suggestions accepted ÷ suggestions shown.", "cat": "AI"}, {"idx": 168, "q": "AI Feature Adoption Rate", "a": "Users who try AI feature ÷ active users.", "cat": "AI"}, {"idx": 169, "q": "AI Repeat Usage Rate", "a": "% users returning to AI feature.", "cat": "AI"}, {"idx": 170, "q": "Model Training Job Success Rate", "a": "Successful jobs ÷ total jobs.", "cat": "AI"}, {"idx": 171, "q": "Training Cost per Epoch", "a": "Compute cost per training epoch.", "cat": "AI"}, {"idx": 172, "q": "GPU Utilization %", "a": "GPU hours used ÷ available GPU hours.", "cat": "AI"}, {"idx": 173, "q": "Inference Cost per Query", "a": "Avg cost to answer one user query.", "cat": "AI"}, {"idx": 174, "q": "Batching Efficiency", "a": "Tokens batched per inference call (saves cost).", "cat": "AI"}, {"idx": 175, "q": "Cache Hit Rate for Embeddings", "a": "Cached embeddings used ÷ requests.", "cat": "AI"}, {"idx": 176, "q": "Index Freshness Lag", "a": "Time since last index update.", "cat": "AI"}, {"idx": 177, "q": "Embedding Dimensionality Impact", "a": "Tradeoff metric for quality vs cost.", "cat": "AI"}, {"idx": 178, "q": "Model Size vs Latency Tradeoff", "a": "Metric describing accuracy vs latency curve.", "cat": "AI"}, {"idx": 179, "q": "Prompt Token Efficiency", "a": "Useful tokens ÷ total tokens sent.", "cat": "AI"}, {"idx": 180, "q": "Response Quality Delta (A/B)", "a": "Change in human-eval score between model versions.", "cat": "AI"}, {"idx": 181, "q": "Hallucination Severity Score", "a": "Weighted score by impact of hallucination.", "cat": "AI"}, {"idx": 182, "q": "Explainability Coverage", "a": "% outputs with an explainability artifact.", "cat": "AI"}, {"idx": 183, "q": "Confidence Calibration", "a": "Alignment of model confidence with correctness.", "cat": "AI"}, {"idx": 184, "q": "Retrieval Latency", "a": "Time to fetch context docs.", "cat": "AI"}, {"idx": 185, "q": "Cold Start Penalty (models)", "a": "Performance hit for infrequently used models.", "cat": "AI"}, {"idx": 186, "q": "Throughput per GPU", "a": "Tokens/sec per GPU.", "cat": "AI"}, {"idx": 187, "q": "Autoscaling Success (AI clusters)", "a": "Successful scale events ÷ total scale events.", "cat": "AI"}, {"idx": 188, "q": "Model Version Adoption Rate", "a": "% traffic on new model version after rollout.", "cat": "AI"}, {"idx": 189, "q": "Liquidity", "a": "Successful matches ÷ total demand.", "cat": "Marketplace"}, {"idx": 190, "q": "Fill Rate", "a": "Completed orders ÷ requests.", "cat": "Marketplace"}, {"idx": 191, "q": "Match Time", "a": "Median time to match demand → supply.", "cat": "Marketplace"}, {"idx": 192, "q": "Supply Density", "a": "Suppliers per area unit.", "cat": "Marketplace"}, {"idx": 193, "q": "Supply Utilization", "a": "Active time ÷ available time.", "cat": "Marketplace"}, {"idx": 194, "q": "Acceptance Rate", "a": "Accepted orders ÷ assigned orders.", "cat": "Marketplace"}, {"idx": 195, "q": "Supply Onboarding Conversion", "a": "Onboarded suppliers who go live ÷ total onboarded.", "cat": "Marketplace"}, {"idx": 196, "q": "Partner Churn", "a": "% partners leaving platform.", "cat": "Marketplace"}, {"idx": 197, "q": "Partner Activation Rate", "a": "% signed partners that complete first order.", "cat": "Marketplace"}, {"idx": 198, "q": "Batching Rate", "a": "% orders delivered together.", "cat": "Marketplace"}, {"idx": 199, "q": "Average Wait Time (demand)", "a": "Time until service begins.", "cat": "Marketplace"}, {"idx": 200, "q": "Cancellation Rate (demand)", "a": "Customer cancellations ÷ confirmed orders.", "cat": "Marketplace"}, {"idx": 201, "q": "Cancellation Rate (supply)", "a": "Supply-initiated cancellations ÷ assignments.", "cat": "Marketplace"}, {"idx": 202, "q": "Wrong Match Rate", "a": "Matches causing failure/cancellation.", "cat": "Marketplace"}, {"idx": 203, "q": "Match Quality Score", "a": "Composite of ETA, rating, distance.", "cat": "Marketplace"}, {"idx": 204, "q": "ETA Accuracy", "a": "% deliveries meeting estimated time of arrival.", "cat": "Marketplace"}, {"idx": 205, "q": "On-Time Delivery Rate", "a": "Deliveries within promised window.", "cat": "Marketplace"}, {"idx": 206, "q": "Average Delivery Time", "a": "Median time from confirmation → delivery.", "cat": "Marketplace"}, {"idx": 207, "q": "Delivery Cost per Order", "a": "Fulfillment cost per order.", "cat": "Marketplace"}, {"idx": 208, "q": "Contribution Margin per Order", "a": "Revenue − variable order costs.", "cat": "Marketplace"}, {"idx": 209, "q": "GMV per City", "a": "GMV aggregated by city.", "cat": "Marketplace"}, {"idx": 210, "q": "Take Rate by Category", "a": "Platform revenue ÷ GMV by category.", "cat": "Marketplace"}, {"idx": 211, "q": "Supply Earnings per Hour", "a": "Average earnings for supplier per active hour.", "cat": "Marketplace"}, {"idx": 212, "q": "Fill Rate during Peak", "a": "Fill rate in high-demand windows.", "cat": "Marketplace"}, {"idx": 213, "q": "Micro-geo Liquidity", "a": "Liquidity measured per small area.", "cat": "Marketplace"}, {"idx": 214, "q": "Surge Acceptance Rate", "a": "Supply acceptance during surge pricing.", "cat": "Marketplace"}, {"idx": 215, "q": "Incentive ROI", "a": "Gross margin uplift ÷ incentive spend.", "cat": "Marketplace"}, {"idx": 216, "q": "Effective Price Elasticity", "a": "Demand change ÷ price change.", "cat": "Marketplace"}, {"idx": 217, "q": "Supply Elasticity", "a": "Supply response to price/incentive change.", "cat": "Marketplace"}, {"idx": 218, "q": "Marketplace NPS (demand)", "a": "NPS for buyers.", "cat": "Marketplace"}, {"idx": 219, "q": "Marketplace NPS (supply)", "a": "NPS for suppliers.", "cat": "Marketplace"}, {"idx": 220, "q": "Match Reassignment Rate", "a": "Orders reassigned after initial match.", "cat": "Marketplace"}, {"idx": 221, "q": "Dispatch Latency", "a": "Time between order → dispatch instruction.", "cat": "Marketplace"}, {"idx": 222, "q": "Idle Time per Supplier", "a": "Avg idle time between assignments.", "cat": "Marketplace"}, {"idx": 223, "q": "Recruitment Cost per Supplier", "a": "Cost to onboard a functioning supplier.", "cat": "Marketplace"}, {"idx": 224, "q": "Order Lead Time Variance", "a": "Variance in lead time distribution.", "cat": "Marketplace"}, {"idx": 225, "q": "Percentage of Repeat Suppliers", "a": "Suppliers with >1 order in period.", "cat": "Marketplace"}, {"idx": 226, "q": "Average Orders per Active Supplier", "a": "Orders ÷ active suppliers.", "cat": "Marketplace"}, {"idx": 227, "q": "Supply Coverage Ratio", "a": "Suppliers available ÷ demand in window.", "cat": "Marketplace"}, {"idx": 228, "q": "Network Effect Index", "a": "Measure how more supply increases demand retention.", "cat": "Marketplace"}, {"idx": 229, "q": "Gross Take Rate Impact", "a": "How discounts/ads affect take rate.", "cat": "Marketplace"}, {"idx": 230, "q": "Marketplace Fraud Rate", "a": "Marketplace-specific fraud events ÷ orders.", "cat": "Marketplace"}, {"idx": 231, "q": "Dispute Rate", "a": "Orders needing manual resolution.", "cat": "Marketplace"}, {"idx": 232, "q": "Regulatory Compliance Incidents", "a": "Count of incidents causing regulatory exposure.", "cat": "Marketplace"}, {"idx": 233, "q": "Marketplace Liquidity Forecast Accuracy", "a": "Forecast vs actual liquidity.", "cat": "Marketplace"}, {"idx": 234, "q": "Top SKU Concentration", "a": "Share of GMV from top SKUs.", "cat": "Marketplace"}, {"idx": 235, "q": "Marketplace Seasonal Variability", "a": "Seasonality magnitude metric.", "cat": "Marketplace"}, {"idx": 236, "q": "TPV", "a": "Total Payment Volume — sum of transaction amounts.", "cat": "Fintech"}, {"idx": 237, "q": "TPC", "a": "Total Payment Count — number of successful transactions.", "cat": "Fintech"}, {"idx": 238, "q": "AOV (fintech)", "a": "TPV ÷ TPC.", "cat": "Fintech"}, {"idx": 239, "q": "Authorization Rate", "a": "Successful authorizations ÷ attempted transactions.", "cat": "Fintech"}, {"idx": 240, "q": "Decline Rate", "a": "Bank/issuer declines ÷ attempted transactions.", "cat": "Fintech"}, {"idx": 241, "q": "Technical Failure Rate", "a": "Technical failures ÷ attempted transactions.", "cat": "Fintech"}, {"idx": 242, "q": "Drop-off Rate (checkout)", "a": "Users abandoning during payment flow.", "cat": "Fintech"}, {"idx": 243, "q": "Fraud Rate", "a": "Fraudulent transactions ÷ total transactions.", "cat": "Fintech"}, {"idx": 244, "q": "False Positive Rate (fraud)", "a": "Legit txns blocked ÷ flagged txns.", "cat": "Fintech"}, {"idx": 245, "q": "Chargeback Rate", "a": "Chargebacks ÷ total txns.", "cat": "Fintech"}, {"idx": 246, "q": "Dispute Win Rate", "a": "Disputes won by platform ÷ disputes filed.", "cat": "Fintech"}, {"idx": 247, "q": "Settlement Time", "a": "Time for merchant to receive funds.", "cat": "Fintech"}, {"idx": 248, "q": "Settlement Success Rate", "a": "Successful settlements ÷ attempted settlements.", "cat": "Fintech"}, {"idx": 249, "q": "MTU (Monthly Transacting Users)", "a": "Unique users transacting monthly.", "cat": "Fintech"}, {"idx": 250, "q": "ARPU (fintech)", "a": "Revenue ÷ MTU.", "cat": "Fintech"}, {"idx": 251, "q": "MDR", "a": "Merchant Discount Rate — fees captured ÷ TPV.", "cat": "Fintech"}, {"idx": 252, "q": "Take Rate (payments)", "a": "Revenue from payments ÷ TPV.", "cat": "Fintech"}, {"idx": 253, "q": "Refund Rate", "a": "Refunded txns ÷ total txns.", "cat": "Fintech"}, {"idx": 254, "q": "KYC Completion Rate", "a": "Users completing KYC ÷ total users.", "cat": "Fintech"}, {"idx": 255, "q": "KYC False Positive Rate", "a": "Incorrect rejections during KYC.", "cat": "Fintech"}, {"idx": 256, "q": "AML Flag Rate", "a": "Suspicious txns flagged ÷ total txns.", "cat": "Fintech"}, {"idx": 257, "q": "OTP Delivery Success", "a": "OTP delivered ÷ OTP attempts.", "cat": "Fintech"}, {"idx": 258, "q": "OTP Latency", "a": "Avg time for OTP delivery.", "cat": "Fintech"}, {"idx": 259, "q": "PSP Downtime Impact", "a": "Revenue lost per PSP downtime minute.", "cat": "Fintech"}, {"idx": 260, "q": "Repayment Rate (lending)", "a": "Loans repaid on schedule ÷ loans due.", "cat": "Fintech"}, {"idx": 261, "q": "Default Rate", "a": "Loans defaulted ÷ total loans.", "cat": "Fintech"}, {"idx": 262, "q": "NPA Ratio", "a": "Non-performing assets ÷ loan portfolio.", "cat": "Fintech"}, {"idx": 263, "q": "LGD", "a": "Loss given default = loss ÷ exposure.", "cat": "Fintech"}, {"idx": 264, "q": "EAD", "a": "Exposure at default — expected outstanding at default.", "cat": "Fintech"}, {"idx": 265, "q": "Charge-off Rate", "a": "Loans charged off ÷ loans outstanding.", "cat": "Fintech"}, {"idx": 266, "q": "Credit Approval Rate", "a": "Approved loans ÷ applications.", "cat": "Fintech"}, {"idx": 267, "q": "Average Ticket Size (loans)", "a": "Avg loan amount.", "cat": "Fintech"}, {"idx": 268, "q": "Delinquency Curve", "a": "Defaults by days-past-due buckets.", "cat": "Fintech"}, {"idx": 269, "q": "Fraud Detection Precision", "a": "True positives ÷ flagged positives.", "cat": "Fintech"}, {"idx": 270, "q": "Fraud Detection Recall", "a": "True positives ÷ actual frauds.", "cat": "Fintech"}, {"idx": 271, "q": "Cost per Transaction", "a": "Processing + network + infra cost per txn.", "cat": "Fintech"}, {"idx": 272, "q": "Wallet Balance per User", "a": "Avg funds stored in wallet.", "cat": "Fintech"}, {"idx": 273, "q": "Top-up Success Rate", "a": "Successful wallet top-ups ÷ attempts.", "cat": "Fintech"}, {"idx": 274, "q": "P2P vs P2M Mix", "a": "Proportion of person-to-person vs merchant payments.", "cat": "Fintech"}, {"idx": 275, "q": "Settlement Reserve Ratio", "a": "Funds held for settlement risk coverage.", "cat": "Fintech"}, {"idx": 276, "q": "Reconciliation Accuracy", "a": "Mismatch events ÷ total settlements.", "cat": "Fintech"}, {"idx": 277, "q": "Merchant Churn (fintech)", "a": "Merchants inactive ÷ merchants active last period.", "cat": "Fintech"}, {"idx": 278, "q": "Chargeback Liability Exposure", "a": "Estimated liability from chargebacks.", "cat": "Fintech"}, {"idx": 279, "q": "Interchange Fee Capture Rate", "a": "Interchange revenue retained ÷ interchange fees.", "cat": "Fintech"}, {"idx": 280, "q": "Payment Gateway Latency", "a": "Avg time to authorize payment.", "cat": "Fintech"}, {"idx": 281, "q": "Average Retry Attempts", "a": "Average retries per failed txn.", "cat": "Fintech"}, {"idx": 282, "q": "Cost of Fraud per 1k Txns", "a": "Monetary fraud cost normalized.", "cat": "Fintech"}, {"idx": 283, "q": "Regulatory SLA Compliance Rate", "a": "% of regulatory SLAs met.", "cat": "Fintech"}, {"idx": 284, "q": "Incrementality (lift)", "a": "True lift attributable to campaign: Treatment − Control conversion rate.", "cat": "Specialist"}, {"idx": 285, "q": "Creative Fatigue Index", "a": "Rate of drop in ad CTR over time for a creative.", "cat": "Specialist"}, {"idx": 286, "q": "Channel ROAS by Cohort", "a": "ROAS segmented by acquisition cohort to spot efficient cohorts.", "cat": "Specialist"}, {"idx": 287, "q": "Experiment Exposure Rate", "a": "% of traffic included in experiments to ensure power.", "cat": "Specialist"}, {"idx": 288, "q": "MDE (Minimum Detectable Effect)", "a": "Smallest effect size an experiment is designed to detect.", "cat": "Specialist"}, {"idx": 289, "q": "NDCG@k", "a": "Normalized Discounted Cumulative Gain at k — ranking quality.", "cat": "Specialist"}, {"idx": 290, "q": "Precision@k (search)", "a": "Relevant results in top-k ÷ k for queries.", "cat": "Specialist"}, {"idx": 291, "q": "Recall@k (search)", "a": "Relevant results retrieved ÷ total relevant results.", "cat": "Specialist"}, {"idx": 292, "q": "Query Reformulation Rate", "a": "% queries where user retries or edits query.", "cat": "Specialist"}, {"idx": 293, "q": "Inventory Availability Rate", "a": "% of time SKU is available for purchase.", "cat": "E-commerce"}, {"idx": 294, "q": "Fulfillment SLA Breach Rate", "a": "Orders breaching promised fulfillment SLA.", "cat": "Marketplace"}, {"idx": 295, "q": "Driver Earnings Variance", "a": "Std deviation of earnings indicating supply inconsistency.", "cat": "Marketplace"}, {"idx": 296, "q": "Billing Dispute Rate", "a": "Disputes about billed amounts ÷ invoices.", "cat": "Fintech"}, {"idx": 297, "q": "Promotional Cannibalization Rate", "a": "% paid orders cannibalized from organic demand due to promo.", "cat": "Growth"}, {"idx": 298, "q": "Feature Flag Rollout Success Rate", "a": "% rollout without rollback after feature flag enable.", "cat": "DevOps"}, {"idx": 299, "q": "Cache Warmup Time", "a": "Time until cache reaches steady hit ratio after deploy.", "cat": "Cloud"}, {"idx": 300, "q": "A/B Test Statistical Power", "a": "Probability test will detect true effect (1−β).", "cat": "Specialist"}];
+
+// --- UI & State ---
+const grid = document.getElementById('grid');
+const search = document.getElementById('search');
+const count = document.getElementById('count');
+const categoryTags = document.getElementById('category-tags');
+const masteryFilter = document.getElementById('mastery-filter');
+const sortFilter = document.getElementById('sort-filter');
+const progressBar = document.getElementById('progress-bar');
+const masteryStatus = document.getElementById('mastery-status');
+
+let cardList = [...cards]; 
+let state = loadState(); 
+
+function loadState() {
+    try {
+        const storedState = JSON.parse(localStorage.getItem('pm_flashcard_state_holographic')) || {}; 
+        cards.forEach(card => {
+            if (!storedState[card.idx]) {
+                storedState[card.idx] = { isFlipped: false, isMastered: false };
+            }
+        });
+        return storedState;
+    } catch (e) {
+        console.error("Error loading state from localStorage", e);
+        return {};
+    }
+}
+
+function saveState() {
+    localStorage.setItem('pm_flashcard_state_holographic', JSON.stringify(state));
+}
+
+// Function to get Tailwind color class for each category
+function getCategoryColor(category) {
+    const slug = category.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const colorMap = {
+        'consumer': 'tag-consumer', 'saas': 'tag-saas', 'cloud': 'tag-cloud', 'ai': 'tag-ai', 
+        'marketplace': 'tag-marketplace', 'fintech': 'tag-fintech', 'specialist': 'tag-specialist', 
+        'e-commerce': 'tag-ecommerce', 'growth': 'tag-growth', 'devops': 'tag-devops',
+    };
+    return colorMap[slug] || 'muted-text';
+}
+
+// Get the actual color value from Tailwind config
+function getColorValue(colorName) {
+    const configColors = tailwind.config.theme.extend.colors;
+    return configColors[colorName] || '#9ca3af'; // default to muted-text
+}
+
+// Helper function to reset all tag styles to inactive
+function resetTagStyles() {
+    document.querySelectorAll('.tag-pill').forEach(tag => {
+        tag.classList.remove('active');
+        tag.style.color = getColorValue('muted-text');
+        tag.style.border = `1px solid ${getColorValue('muted-text')}50`;
+        tag.style.backgroundColor = getColorValue('card-base');
+    });
+}
+
+// Helper function to apply active style to a tag
+function applyActiveTagStyle(tag) {
+    tag.classList.add('active');
+    tag.style.color = getColorValue('accent-focus');
+    tag.style.border = `1px solid ${getColorValue('accent-focus')}`;
+    tag.style.backgroundColor = getColorValue('accent-focus') + '20'; // 10% transparency of accent
+}
+
+// Populate category tags
+const uniqueCats = Array.from(new Set(cards.map(c => c.cat))).sort();
+uniqueCats.forEach(function (c) {
+    const el = document.createElement('div');
+    
+    el.className = `tag-pill text-xs py-1 px-3 rounded-full cursor-pointer`;
+    el.innerText = c.toUpperCase();
+    el.dataset.filterValue = c.toLowerCase();
+    
+    // Apply initial inactive style
+    el.style.color = getColorValue('muted-text');
+    el.style.border = `1px solid ${getColorValue('muted-text')}50`;
+    el.style.backgroundColor = getColorValue('card-base');
+
+    el.addEventListener('click', handleCategoryTagClick);
+    categoryTags.appendChild(el);
+});
+
+let activeCategoryFilter = 'all';
+
+// FIX: Corrected logic for ALL CATEGORIES selection
+function handleCategoryTagClick(event) {
+    const clickedTag = event.currentTarget;
+    const filterValue = clickedTag.dataset.filterValue;
+
+    if (filterValue === 'all' || (activeCategoryFilter === filterValue && filterValue !== 'all')) {
+        // If 'all' is clicked, or the current active filter is clicked again (to deselect it)
+        activeCategoryFilter = 'all';
+        resetTagStyles();
+        applyActiveTagStyle(document.getElementById('tag-all'));
+    } else {
+        // Set the new filter
+        activeCategoryFilter = filterValue;
+        resetTagStyles();
+        applyActiveTagStyle(clickedTag);
+    }
+    applyFilters();
+}
+
+
+function renderCard(card, index, globalIndex) {
+    const cardState = state[card.idx] || { isFlipped: false, isMastered: false };
+
+    const el = document.createElement('div');
+    let cardClasses = 'card cursor-pointer relative';
+    if (cardState.isMastered) {
+        cardClasses += ' mastered'; 
+    }
+    el.className = cardClasses;
+
+    const inner = document.createElement('div');
+    inner.className = 'card-inner w-full h-full relative';
+    if (cardState.isFlipped) inner.classList.add('is-flipped');
+
+    const colorClass = getCategoryColor(card.cat);
+    const colorValue = getColorValue(colorClass);
+
+    // Front (Question)
+    const front = document.createElement('div');
+    front.className = 'card-face card-front h-full flex flex-col justify-between'; 
+    
+    // New Feature: Hover Hint (only on front face)
+    const hint = document.createElement('div');
+    hint.className = 'card-hover-hint';
+    // Create a rotating text element
+    hint.innerHTML = `<span class="card-hover-hint-text">ANSWER HINT...</span>`;
+    
+    // Front Content
+    front.innerHTML = `
+        <div class="flex-grow">
+            <div class="text-xs mb-2 font-mono text-muted-text flex justify-between items-center">
+                <span style="color: ${colorValue}; font-weight: 700;">${card.cat.toUpperCase()}</span> 
+                ${cardState.isMastered ? `<span class="text-accent-mastered ml-1 text-sm font-bold">★ MASTERED</span>` : ''}
+            </div>
+            <div class="text-q">${globalIndex + 1}. ${card.q}</div>
+        </div>
+        <div class="flex justify-end pt-3 border-t border-muted-text/30">
+            <button class="mastery-toggle text-xs py-1 px-3 rounded-full transition-colors font-semibold border ${cardState.isMastered ? 'bg-accent-mastered/20 text-accent-mastered border-accent-mastered' : 'bg-card-base text-muted-text border-muted-text/50 hover:bg-card-base/50'}" data-card-id="${card.idx}">
+                ${cardState.isMastered ? 'MASTERED' : 'MARK MASTERED'}
+            </button>
+        </div>
+    `;
+    front.appendChild(hint);
+
+    // Back (Answer)
+    const back = document.createElement('div');
+    back.className = 'card-face card-back h-full flex flex-col justify-between'; 
+    back.innerHTML = `
+        <div class="flex-grow">
+            <div class="text-xs mb-2 font-mono" style="color: ${colorValue}; font-weight: 700;">DEFINITION / FORMULA</div>
+            <div class="text-a">${card.a}</div>
+        </div>
+        <div class="flex justify-between items-center pt-3 border-t border-muted-text/30">
+            <div class="text-xs font-mono text-muted-text">${card.cat.toUpperCase()}</div>
+            <button class="mastery-toggle text-xs py-1 px-3 rounded-full transition-colors font-semibold border ${cardState.isMastered ? 'bg-accent-mastered/20 text-accent-mastered border-accent-mastered' : 'bg-card-base text-muted-text border-muted-text/50 hover:bg-card-base/50'}" data-card-id="${card.idx}">
+                ${cardState.isMastered ? 'MASTERED' : 'MARK MASTERED'}
+            </button>
+        </div>
+    `;
+    
+    inner.appendChild(front);
+    inner.appendChild(back);
+    el.appendChild(inner);
+
+    // Click to flip
+    el.addEventListener('click', function(e){
+        if (e.target.classList.contains('mastery-toggle')) return; 
+
+        inner.classList.toggle('is-flipped');
+        state[card.idx].isFlipped = inner.classList.contains('is-flipped');
+        saveState();
+    });
+
+    // Mastery Toggle
+    el.querySelectorAll('.mastery-toggle').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation(); 
+            toggleMastery(card.idx);
+        });
+    });
+
+    // Long press copy (retains original logic)
+    let pressTimer;
+    el.addEventListener('touchstart', function(e){ 
+      pressTimer = setTimeout(function(){ 
+        navigator.clipboard && navigator.clipboard.writeText(card.a); 
+        el.style.boxShadow=`0 0 30px ${getColorValue('accent-focus')}40`; 
+        setTimeout(function(){ el.style.boxShadow=''; },300); 
+      }, 700); 
+    });
+    el.addEventListener('touchend', function(){ clearTimeout(pressTimer); });
+
+    return el;
+}
+
+function updateProgress() {
+    const totalCards = cards.length;
+    const masteredCount = cards.filter(c => state[c.idx] && state[c.idx].isMastered).length;
+    const percentage = (masteredCount / totalCards) * 100;
+
+    progressBar.style.width = `${percentage}%`;
+    masteryStatus.innerText = `${masteredCount} / ${totalCards} Mastered`;
+}
+
+function sortCards(list) {
+    const sortBy = sortFilter.value;
+
+    if (sortBy === 'category') {
+        list.sort((a, b) => a.cat.localeCompare(b.cat));
+    } else if (sortBy === 'index') {
+        // Sort by original index (1 to 300)
+        list.sort((a, b) => a.idx - b.idx);
+    }
+    // Note: Shuffle handles its own randomization of the filtered list
+    return list;
+}
+
+function render(list){
+    grid.innerHTML = '';
+    
+    // Sort the list before rendering (except if already shuffled)
+    if (sortFilter.value !== 'shuffle') {
+        list = sortCards(list);
+    }
+
+    const totalMastered = cards.filter(c => state[c.idx] && state[c.idx].isMastered).length;
+    updateProgress();
+
+    if (!list.length) {
+        grid.innerHTML = `<div class="col-span-1 lg:col-span-4 xl:col-span-5 p-8 rounded-lg bg-card-base border border-red-500/50 text-center shadow-lg">
+            <p class="text-xl text-red-400 font-semibold">FILTERS BLOCKED VIEW</p>
+            <p class="mt-2 text-muted-text">No cards match your current search or filters. Adjust them to continue studying.</p>
+            <div class="mt-2 text-sm text-muted-text">Total Mastered: ${totalMastered} / ${cards.length}</div>
+            <button class="mt-4 text-accent-focus hover:text-white-text transition-colors border border-accent-focus/50 py-1.5 px-3 rounded-md" onclick="reset()">RESET FILTERS AND MASTERY</button>
+        </div>`;
+        count.innerText = `0 Cards`;
+        return;
+    }
+  
+    count.innerText = `${list.length} Cards Displayed`;
+
+    list.forEach(function(card, i){
+        // Use global index (i) for the displayed number
+        grid.appendChild(renderCard(card, i, i));
+    });
+}
+
+function shuffle(){ 
+    // Only shuffle the currently displayed cardList
+    for(var i=cardList.length-1;i>0;i--){ 
+        var j=Math.floor(Math.random()*(i+1)); 
+        var t=cardList[i]; 
+        cardList[i]=cardList[j]; 
+        cardList[j]=t;
+    } 
+    // Set sort filter to default after shuffle, as the list is now randomized
+    sortFilter.value = 'index'; 
+    render(cardList); 
+}
+
+function flipAll(){ 
+    const isFlippedNow = document.querySelector('.card-inner.is-flipped');
+    const shouldFlip = !isFlippedNow; 
+
+    document.querySelectorAll('.card-inner').forEach(function(c){ 
+        const cardElement = c.closest('.card');
+        const cardIdElement = cardElement.querySelector('.mastery-toggle');
+        if (!cardIdElement) return; 
+        
+        const cardId = cardIdElement.dataset.cardId;
+        
+        if (shouldFlip) {
+            c.classList.add('is-flipped');
+            state[cardId].isFlipped = true;
+        } else {
+            c.classList.remove('is-flipped');
+            state[cardId].isFlipped = false;
+        }
+    }); 
+    saveState();
+}
+
+function toggleMastery(cardId) {
+    const id = parseInt(cardId);
+    state[id].isMastered = !state[id].isMastered;
+    saveState();
+    applyFilters(); // Re-apply filters to update progress and potentially hide/show cards based on mastery filter
+}
+
+function reset() { 
+    // Reset filters
+    search.value = ''; 
+    masteryFilter.value = 'all';
+    sortFilter.value = 'index';
+    
+    // Reset category filter and style
+    activeCategoryFilter = 'all';
+    resetTagStyles();
+    applyActiveTagStyle(document.getElementById('tag-all'));
+
+    // Reset mastery state in memory and storage (keep flip state)
+    state = loadState(); 
+    cards.forEach(card => {
+        card.isMastered = false;
+        state[card.idx].isMastered = false;
+        // Optionally reset flip state: state[card.idx].isFlipped = false; 
+    });
+    saveState();
+
+    cardList = [...cards]; 
+    render(cardList); 
+}
+
+search.addEventListener('input', applyFilters);
+masteryFilter.addEventListener('change', applyFilters);
+sortFilter.addEventListener('change', applyFilters); // Re-render when sorting changes
+
+function applyFilters(){
+    const q = search.value.trim().toLowerCase();
+    const catFilter = activeCategoryFilter;
+    const masteryStatus = masteryFilter.value;
+    
+    let filteredList = cards.filter(function(c){ 
+        const cardState = state[c.idx] || { isFlipped: false, isMastered: false };
+
+        // Category Filter
+        const inCat = (catFilter === 'all' || c.cat.toLowerCase() === catFilter);
+
+        // Search Filter (checks question, answer, and category)
+        const inText = (
+            c.q.toLowerCase().includes(q) || 
+            c.a.toLowerCase().includes(q) ||
+            c.cat.toLowerCase().includes(q)
+        );
+
+        // Mastery Filter
+        let passesMastery = true;
+        if (masteryStatus === 'mastered') {
+            passesMastery = cardState.isMastered;
+        } else if (masteryStatus === 'unmastered') {
+            passesMastery = !cardState.isMastered;
+        }
+
+        return inCat && inText && passesMastery;
+    });
+    
+    // Update the global cardList reference with the newly filtered/sorted list
+    cardList = filteredList;
+    render(cardList);
+}
+
+function exportCSV(){
+    var rows = [['Question','Answer','Category', 'Mastered Status']].concat(cardList.map(function(c){ 
+        const isMastered = state[c.idx] ? state[c.idx].isMastered : false;
+        return [
+            c.q.replace(/"/g,'""'), 
+            c.a.replace(/"/g,'""'), 
+            c.cat, 
+            isMastered ? 'Mastered' : 'Unmastered'
+        ]; 
+    }));
+    var csv = rows.map(function(r){ return r.map(function(v){ return '"'+v+'"'; }).join(','); }).join('\n');
+    var blob = new Blob([csv], {type: 'text/csv'});
+    var url = URL.createObjectURL(blob); 
+    var a = document.createElement('a'); 
+    a.href = url; 
+    a.download = 'pm_flashcards_300_export.csv'; 
+    document.body.appendChild(a); 
+    a.click(); 
+    a.remove(); 
+    URL.revokeObjectURL(url);
+}
+
+// Initial load: Apply styles to the initial 'ALL CATEGORIES' tag and render
+resetTagStyles(); 
+applyActiveTagStyle(document.getElementById('tag-all'));
+applyFilters(); 
+</script>
+</body>
+</html>
